@@ -1,69 +1,95 @@
-//Visitor Management
-
+#include "Visitor.h"
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-
-#define MAX_VISITORS 1000
-#define FILENAME "visitors.csv"
-
-struct Visitor {
-    int id;
-    char name[50];
-    char purpose[100];
-    char status[20];
-};
+#include <time.h>
 
 struct Visitor visitors[MAX_VISITORS];
-int numVisitors = 0; // Track the number of visitors
+int numVisitors = 0;
 
-// Function to load visitors from CSV file
 void loadVisitors() {
-    FILE *file = fopen(FILENAME, "r");
+    FILE *file = fopen("visitors.csv", "r");
     if (file != NULL) {
         int i = 0;
-        while (fscanf(file, "%d,%[^,],%[^,],%[^\n]\n", &visitors[i].id, visitors[i].name, visitors[i].purpose, visitors[i].status) != EOF) {
+        while (fscanf(file, "%d,%[^,],%[^,],%[^,],%ld\n", &visitors[i].id, visitors[i].name, visitors[i].purpose, visitors[i].status, &visitors[i].timestamp) != EOF) {
             i++;
         }
         fclose(file);
+        numVisitors = i; // Update the number of visitors
     }
 }
 
-// Function to save visitors to CSV file
 void saveVisitors() {
-    FILE *file = fopen(FILENAME, "w");
+    FILE *file = fopen("visitors.csv", "w");
     if (file != NULL) {
-        for (int i = 0; i < MAX_VISITORS; i++) {
-            if (visitors[i].id != 0) {
-                fprintf(file, "%d,%s,%s,%s\n", visitors[i].id, visitors[i].name, visitors[i].purpose, visitors[i].status);
-            }
+        for (int i = 0; i < numVisitors; i++) {
+            fprintf(file, "%d,%s,%s,%s,%ld\n", visitors[i].id, visitors[i].name, visitors[i].purpose, visitors[i].status, visitors[i].timestamp);
         }
         fclose(file);
     }
 }
 
-// Function to add a new visitor
-void addVisitor(int id, char name[], char purpose[]) {
+void addVisitor() {
+    if (numVisitors >= MAX_VISITORS) {
+        printf("Visitor limit reached!\n");
+        return;
+    }
+
+    FILE *file = fopen("visitors.csv", "a+");
+    if (file == NULL) {
+        printf("Error opening file!\n");
+        return;
+    }
+
+    // Count the number of lines in the file to get the next visitor ID
+    int id = numVisitors + 1;
+
+    printf("Adding New Visitor\n");
+    printf("Enter Visitor Name: ");
+    scanf("%s", visitors[numVisitors].name);
+    printf("Enter Purpose of Visit: ");
+    scanf("%s", visitors[numVisitors].purpose);
+    strcpy(visitors[numVisitors].status, "Approved");
+    visitors[numVisitors].timestamp = time(NULL);
     visitors[numVisitors].id = id;
-    strcpy(visitors[numVisitors].name, name);
-    strcpy(visitors[numVisitors].purpose, purpose);
-    strcpy(visitors[numVisitors].status, "Pending Approval");
+
+    // Append the new visitor entry to the file
+    fprintf(file, "%d,%s,%s,%s,%ld\n", visitors[numVisitors].id, visitors[numVisitors].name, visitors[numVisitors].purpose, visitors[numVisitors].status, visitors[numVisitors].timestamp);
+    fclose(file);
+
     numVisitors++;
 }
 
+#include "Visitor.h"
+#include <stdio.h>
+
 int main() {
+    int choice;
     loadVisitors();
 
-    int n;
+    do {
+        printf("\nVisitor Management\n");
+        printf("1. View Visitor Log\n");
+        printf("2. Add New Visitor\n");
+        printf("3. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
 
-do {
-    printf("Visitor Management\n");
-    printf("Enter:\n");
-    printf("1 for Getting Visitor Log\n2 for Adding new Visitor in the log\n3 to exit from this Portal");
-    scanf("%d", &n);
-} while (n != 3);
-    // Your visitor management system code here...
+        switch (choice) {
+            case 1:
+                // Code to view visitor log
+                break;
+            case 2:
+                addVisitor();
+                break;
+            case 3:
+                saveVisitors();
+                printf("Exiting...\n");
+                break;
+            default:
+                printf("Invalid choice!\n");
+                break;
+        }
+    } while (choice != 3);
 
-    saveVisitors();
     return 0;
 }
