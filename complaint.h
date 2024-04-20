@@ -1,26 +1,26 @@
 #ifndef COMPLAINT_H
 #define COMPLAINT_H
 
-#define MAX_COMPLAINTS 1000
-#define FILENAME "complaints.csv"
+#define MAX_COMPLAINTS 100
+#define FILENAME "complaints.txt"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
-
+// Structure to represent a complaint
 struct Complaint {
     int id;
+    char name[50];
+    char roll[20];
+    char room[10];
     char type[50];
     char description[100];
     char status[20];
-    time_t timestamp;
+    char timestamp[20];
 };
 
-extern struct Complaint complaints[MAX_COMPLAINTS];
-
+// Function declarations
 void loadComplaints();
 void saveComplaints();
-void lodgeComplaint(int id, char type[], char description[]);
+void lodgeComplaint(int id, char name[], char roll[], char room[], char type[], char description[]);
+void inputComplaintDetails();
+void updateComplaintStatus(int id, char newStatus[], char comment[]);
 
-#endif
+#endif /* COMPLAINT_H */
