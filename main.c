@@ -18,28 +18,28 @@ int main() {
         printf("Enter choice for login:\n");
         printf("1. Admin\n2. Student\n3. Exit\n");
         printf("Enter your choice: ");
-
-        // printf("1. Add Student\n");
-        // printf("2. Display Students\n");
-        // printf("3. Exit\n");
-        // printf("Enter your choice: ");
         scanf("%d", &login_choice);
         getchar(); // Consume newline character left in the buffer
 
         switch (login_choice) {
             case 1:
-                adminUser();
+                if(adminUser()){
+                    break;
+                }
                 break;
             case 2:
-                loginUser();
+                if(loginUser()){
+                    break;
+                }
                 break;
             case 3:
                 printf("Exiting...\n");
+                exit(0);
                 break;
             default:
                 printf("Invalid choice. Please try again.\n");
         }
-    } while (login_choice != 3);
+    } while (!(login_choice > 0 && login_choice < 4));
     
     
 
