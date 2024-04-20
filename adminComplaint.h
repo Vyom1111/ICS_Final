@@ -1,8 +1,10 @@
-#ifndef ADMINCOMPLAINT_H
-#define ADMINCOMPLAINT_H
+#ifndef ADMIN_COMPLAINT_H
+#define ADMIN_COMPLAINT_H
 
-#include "Complaint.h"
+#include "complaint.h"
 
-void updateComplaintStatus(int complaintId, char newStatus[], char comment[]);
+// Function declaration
+void updateComplaintStatus(int id, char newStatus[], char comment[]);
+void inputComplaintUpdate();
 
-#endif
+#endif /* ADMIN_COMPLAINT_H */
