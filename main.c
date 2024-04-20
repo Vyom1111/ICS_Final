@@ -4,12 +4,11 @@
 #include "student_management.h"
 #include "room_management.h"
 #include "authentication.h"
+#include "complaint.h"
+#include "admincomplaint.h"
 
 int main() {
     int choice;
-
-    // registerAdminUser();
-    //loginUser();
     int login_choice;
     int loggedIn = 0;
     do {
@@ -46,7 +45,10 @@ int main() {
             printf("2. Display Students\n");
             printf("3. Register admin\n");
             printf("4. Register student\n");
-            printf("5. Exit\n");
+            printf("5. Load complaints\n");
+            printf("6. Input complaints\n");
+            printf("7. Update complaints\n");
+            printf("8. Exit\n");
             printf("Enter your choice: ");
             scanf("%d", &choice);
             getchar(); // Consume newline character left in the buffer
@@ -65,13 +67,21 @@ int main() {
                     registerUser();
                     break;
                 case 5:
+                    loadComplaints();
+                    break;
+                case 6:
+                    inputComplaintDetails();
+                    break;
+                case 7:
+                    inputComplaintUpdate();
+                    break;
+                case 8:
                     printf("Exiting...\n");
                     break;
-                
                 default:
                     printf("Invalid choice. Please try again.\n");
             }
-        } while (choice != 5);
+        } while (choice != 8);
     }
     else if(login_choice == 2){
 
