@@ -6,6 +6,7 @@
 #include "authentication.h"
 #include "complaint.h"
 #include "admincomplaint.h"
+#include "visitor.h"
 
 int main() {
     int choice;
@@ -48,7 +49,9 @@ int main() {
             printf("5. Load complaints\n");
             printf("6. Input complaints\n");
             printf("7. Update complaints\n");
-            printf("8. Exit\n");
+            printf("8. Load visitors\n");
+            printf("9. Add visitor\n");
+            printf("10. Exit\n");
             printf("Enter your choice: ");
             scanf("%d", &choice);
             getchar(); // Consume newline character left in the buffer
@@ -76,12 +79,18 @@ int main() {
                     inputComplaintUpdate();
                     break;
                 case 8:
+                    loadVisitors();
+                    break;
+                case 9:
+                    addVisitor();
+                    break;
+                case 10:
                     printf("Exiting...\n");
                     break;
                 default:
                     printf("Invalid choice. Please try again.\n");
             }
-        } while (choice != 8);
+        } while (choice != 10);
     }
     else if(login_choice == 2){
 
