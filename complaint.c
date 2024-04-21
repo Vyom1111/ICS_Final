@@ -15,14 +15,14 @@ void loadComplaints() {
     FILE *file = fopen(FILENAME, "r");
     if (file != NULL) {
         printf("Existing Complaints:\n");
-        printf("ID\tName\tRoll\tRoom\tType\tDescription\tStatus\tTimestamp\n");
-        printf("-------------------------------------------------------------------------------------\n");
+        printf("ID\t%-15s\t%-15s\tRoom\t%-15s\t%-45s\t%-15s\tTimestamp\n","Name","Roll","Type","Description","Status");
+        printf("---------------------------------------------------------------------------------------------------------------------------------------------------\n");
         
         int i = 0;
         while (fscanf(file, "%d,%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]\n", 
                       &complaints[i].id, complaints[i].name, complaints[i].roll, complaints[i].room,
                       complaints[i].type, complaints[i].description, complaints[i].status, complaints[i].timestamp) != EOF) {
-            printf("%d\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n", 
+            printf("%d\t%-15s\t%-15s\t%s\t%-15s\t%-45s\t%-15s\t%s\n", 
                    complaints[i].id, complaints[i].name, complaints[i].roll, complaints[i].room,
                    complaints[i].type, complaints[i].description, complaints[i].status, complaints[i].timestamp);
             i++;
@@ -90,29 +90,24 @@ void lodgeComplaint(int id, char name[], char roll[], char room[], char type[], 
 void inputComplaintUpdate() {
     int id;
     char newStatus[20];
-    char comment[100];
 
     // Prompt user for complaint update details
     printf("Enter complaint ID to update status: ");
     scanf("%d", &id);
     printf("Enter new status: ");
     scanf("%s", newStatus);
-    printf("Enter admin comment: ");
-    scanf("%s", comment);
 
     // Update the complaint status with provided inputs
-    updateComplaintStatus(id, newStatus, comment);
+    updateComplaintStatus(id, newStatus);
 }
 
 // Function to update complaint status by admin
-void updateComplaintStatus(int id, char newStatus[], char comment[]) {
+void updateComplaintStatus(int id, char newStatus[]) {
     for (int i = 0; i < MAX_COMPLAINTS; i++) {
         if (complaints[i].id == id) {
             strcpy(complaints[i].status, newStatus);
-            strcat(complaints[i].status, " - ");
-            strcat(complaints[i].status, comment);
+            saveComplaints();
             break;
         }
     }
 }
-
