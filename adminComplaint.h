@@ -4,7 +4,7 @@
 #include "complaint.h"
 
 // Function declaration
-void updateComplaintStatus(int id, char newStatus[], char comment[]);
+void updateComplaintStatus(int id, char newStatus[]);
 void inputComplaintUpdate();
 
 #endif /* ADMIN_COMPLAINT_H */
