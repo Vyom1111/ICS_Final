@@ -1,12 +1,19 @@
 #ifndef INVENTORY_MANAGEMENT_H
 #define INVENTORY_MANAGEMENT_H
 
-// Function prototypes
-void log_inventory_issue(char* student_name, char* item);
-void issue_inventory_item(char* student_name, char* item);
-void display_inventory();
-void prompt_issue_inventory_item();
-void add_inventory_item(char* item, int quantity);
-void add_inventory_item_case();
+#define MAX_ITEMS 100
+#define INVENTORY_FILENAME "hostel_inventory.txt"
+
+struct Item {
+    char name[50];
+    int stock;
+};
+
+void addItem(struct Item inventory[], int *inventorySize);
+void updateInventory(struct Item inventory[], int inventorySize);
+void viewInventory(struct Item inventory[], int inventorySize);
+void issueItem(struct Item inventory[], int inventorySize);
+void saveInventory(struct Item inventory[], int inventorySize);
+void loadInventory(struct Item inventory[], int *inventorySize);
 
 #endif /* INVENTORY_MANAGEMENT_H */
