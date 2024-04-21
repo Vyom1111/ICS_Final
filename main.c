@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include "student_management.h"
-#include "room_management.h"
 #include "authentication.h"
 #include "complaint.h"
 #include "admincomplaint.h"
@@ -12,6 +11,11 @@
 #include "inventory_management.h" // Include inventory management header file
 
 int main() {
+
+    struct Item inventory[MAX_ITEMS];
+    int inventorySize = 0;
+    loadInventory(inventory, &inventorySize);
+
     int choice;
     int login_choice;
     int loggedIn = 0;
@@ -44,8 +48,6 @@ int main() {
     
     if(login_choice == 1){
         // Load room data
-        int numRooms = 10; // Example: 10 rooms
-        Room *rooms = initializeRoomData(numRooms);
         
         do {
             printf("\nHostel Management System\n");
@@ -57,12 +59,12 @@ int main() {
             printf("6. Update complaints\n");
             printf("7. Load visitors\n");
             printf("8. Add visitor\n");
-            printf("9. Display Room Details\n");
-            printf("10. Add Staff\n");
-            printf("11. Display Staff\n");
-            printf("12. Display Entry or Exit Log\n");
-            printf("13. Display Available Inventory\n");
-            printf("14. Add Item to Inventory\n");
+            printf("9. Add Staff\n");
+            printf("10. Display Staff\n");
+            printf("11. Display Entry or Exit Log\n");
+            printf("12. addItem\n");
+            printf("13. updateInventory\n");
+            printf("14. viewInventory\n");
             printf("15. Exit\n"); // Changed exit option number
             printf("Enter your choice: ");
             scanf("%d", &choice);
@@ -94,22 +96,24 @@ int main() {
                     addVisitor();
                     break;
                 case 9:
-                    displayRoomDetails(rooms, numRooms);
-                    break;
-                case 10:
                     add_staff_case();
                     break;
-                case 11:
+                case 10:
                     display_staff();
                     break;
-                case 12:
+                case 11:
                     display_log();
                     break;
+                case 12:
+                    addItem(inventory, &inventorySize);
+                    saveInventory(inventory, inventorySize); // Call to display available inventory function
+                    break;
                 case 13:
-                    display_inventory(); // Call to display available inventory function
+                    updateInventory(inventory, inventorySize);
+                    saveInventory(inventory, inventorySize); // Call to add item to inventory function
                     break;
                 case 14:
-                    add_inventory_item_case(); // Call to add item to inventory function
+                    viewInventory(inventory, inventorySize);
                     break;
                 case 15:
                     printf("Exiting...\n");
@@ -120,7 +124,6 @@ int main() {
         } while (choice != 15);
 
         // Free allocated memory for rooms
-        free(rooms);
     }
     else if(login_choice == 2){
         do {
@@ -149,10 +152,11 @@ int main() {
                     enter_exit_hostel(choice);
                     break;
                 case 4:
-                    prompt_issue_inventory_item(); // Call to issue inventory item function
+                    issueItem(inventory, inventorySize);
+                    saveInventory(inventory, inventorySize);// Call to issue inventory item function
                     break;
                 case 5:
-                    display_inventory(); // Call to display available inventory function
+                    viewInventory(inventory, inventorySize); // Call to display available inventory function
                     break;
                 case 6:
                     printf("Exiting...\n");
