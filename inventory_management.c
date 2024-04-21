@@ -4,157 +4,116 @@
 #include <time.h>
 #include <string.h>
 
-#define INVENTORY_FILE "inventory.txt"
-#define LOG_FILE "inventory_logs.txt"
-#define MAX_NAME_LENGTH 50
+struct Item inventory[MAX_ITEMS];
+    int inventorySize = 0;
 
-// Function to record inventory issuance in the log
-void log_inventory_issue(char* student_name, char* item) {
-    // Get current date and time
-    time_t raw_time;
-    struct tm *timeinfo;
-    char timestamp[50];
-
-    time(&raw_time);
-    timeinfo = localtime(&raw_time);
-    strftime(timestamp, sizeof(timestamp), "%Y-%m-%d %H:%M:%S", timeinfo);
-
-    // Log the issuance of inventory item with date and time
-    FILE *log_file;
-    log_file = fopen(LOG_FILE, "a"); // Open the file in append mode
-    
-    if (log_file == NULL) {
-        printf("Error opening log file!\n");
+// Function to add item to inventory
+void addItem(struct Item inventory[], int *inventorySize) {
+    if (*inventorySize >= MAX_ITEMS) {
+        printf("Inventory is full. Cannot add more items.\n");
         return;
     }
+
+    printf("Enter item details:\n");
+    printf("Name: ");
+    scanf("%s", inventory[*inventorySize].name);
+    printf("Stock: ");
+    scanf("%d", &inventory[*inventorySize].stock);
+
+    (*inventorySize)++;
+    printf("Item added to inventory successfully.\n");
     
-    fprintf(log_file, "%s issued %s at %s\n", student_name, item, timestamp);
-    fclose(log_file);
 }
 
-// Function to issue an item from the inventory
-void issue_inventory_item(char* student_name, char* item) {
-    // Open the inventory file
-    FILE *inventory_file;
-    inventory_file = fopen(INVENTORY_FILE, "r+"); // Open the file in read/write mode
-    
-    if (inventory_file == NULL) {
-        printf("Error opening inventory file!\n");
+// Function to update inventory
+void updateInventory(struct Item inventory[], int inventorySize) {
+    if (inventorySize == 0) {
+        printf("Inventory is empty. Please add items first.\n");
         return;
     }
 
-    // Check if the item is available in the inventory
-    char line[100];
-    int found = 0;
-    while (fgets(line, sizeof(line), inventory_file) != NULL) {
-        char *token = strtok(line, ":");
-        if (strcmp(token, item) == 0) {
-            found = 1;
-            token = strtok(NULL, ":");
-            int quantity = atoi(token);
-            if (quantity > 0) {
-                // Prompt user for the quantity of the item to issue
-                int numItems;
-                printf("Enter the quantity of '%s' to issue: ", item);
-                scanf("%d", &numItems);
-                getchar(); // Consume newline character left in the buffer
-                if (numItems > quantity) {
-                    printf("Insufficient quantity available for '%s'\n", item);
-                    break;
-                }
-                // Move file pointer back to overwrite the line
-                fseek(inventory_file, -strlen(line), SEEK_CUR);
-                // Decrement the quantity of the item by the number of items to issue
-                fprintf(inventory_file, "%s: %d\n", item, quantity - numItems);
-                // Log the issuance of the item
-                log_inventory_issue(student_name, item);
-                printf("Issued %d '%s'(s) to %s\n", numItems, item, student_name);
-            } else {
-                printf("Item '%s' is out of stock\n", item);
-            }
-            break;
+    printf("Enter the name of the item to update: ");
+    char itemName[50];
+    scanf("%s", itemName);
+
+    for (int i = 0; i < inventorySize; ++i) {
+        if (strcmp(inventory[i].name, itemName) == 0) {
+            printf("Enter new stock for %s: ", itemName);
+            scanf("%d", &inventory[i].stock);
+            printf("Inventory updated successfully.\n");
+            return;
         }
     }
 
-    if (!found) {
-        printf("Item '%s' not found in inventory\n", item);
+    printf("Item not found in inventory.\n");
+}
+
+// Function to view inventory
+void viewInventory(struct Item inventory[], int inventorySize) {
+    printf("======= HOSTEL INVENTORY =======\n");
+    printf("%-15s\tStock\n","Name");
+    for (int i = 0; i < inventorySize; ++i) {
+        printf("%-15s\t%d\n", inventory[i].name, inventory[i].stock);
     }
-
-    fclose(inventory_file);
 }
 
-
-// Function to prompt user for input parameters and issue an item from the inventory
-void prompt_issue_inventory_item() {
-    char student_name[MAX_NAME_LENGTH];
-    char item[MAX_NAME_LENGTH];
-
-    // Prompt user for student name
-    printf("Enter student name: ");
-    fgets(student_name, sizeof(student_name), stdin);
-    strtok(student_name, "\n"); // Remove newline character
-
-    // Prompt user for item name
-    printf("Enter item name: ");
-    fgets(item, sizeof(item), stdin);
-    strtok(item, "\n"); // Remove newline character
-
-    // Issue the item
-    issue_inventory_item(student_name, item);
-}
-
-// Function to display the available items in the inventory
-void display_inventory() {
-    FILE *inventory_file;
-    inventory_file = fopen(INVENTORY_FILE, "r"); // Open the file in read mode
-    
-    if (inventory_file == NULL) {
-        printf("Error opening inventory file!\n");
+// Function to issue item to a student
+void issueItem(struct Item inventory[], int inventorySize) {
+    if (inventorySize == 0) {
+        printf("Inventory is empty. Please add items first.\n");
         return;
     }
 
-    printf("Available Inventory Items:\n");
-    char line[100];
-    while (fgets(line, sizeof(line), inventory_file) != NULL) {
-        char *token = strtok(line, ":");
-        printf("%s: ", token); // Print item name
-        token = strtok(NULL, ":");
-        printf("%s", token); // Print quantity
+    printf("Enter the name of the item to issue: ");
+    char itemName[50];
+    scanf("%s", itemName);
+
+    for (int i = 0; i < inventorySize; ++i) {
+        if (strcmp(inventory[i].name, itemName) == 0) {
+            printf("Enter the quantity to issue: ");
+            int quantity;
+            scanf("%d", &quantity);
+            if (inventory[i].stock >= quantity) {
+                inventory[i].stock -= quantity;
+                printf("%d %s issued successfully.\n", quantity, itemName);
+            } else {
+                printf("Not enough stock available for %s.\n", itemName);
+            }
+            return;
+        }
     }
 
-    fclose(inventory_file);
-    
+    printf("Item not found in inventory.\n");
 }
-// Function to add an item to the inventory with a specified quantity
-void add_inventory_item(char* item, int quantity) {
-    // Open the inventory file in append mode to add a new item
-    FILE *inventory_file;
-    inventory_file = fopen(INVENTORY_FILE, "a");
-    
-    if (inventory_file == NULL) {
-        printf("Error opening inventory file!\n");
+
+// Function to save inventory to file
+void saveInventory(struct Item inventory[], int inventorySize) {
+    FILE *file = fopen(INVENTORY_FILENAME, "w");
+    if (file == NULL) {
+        printf("Error opening file for writing.\n");
         return;
     }
 
-    // Write the new item with quantity to the inventory file
-    fprintf(inventory_file, "%s: %d\n", item, quantity);
+    for (int i = 0; i < inventorySize; ++i) {
+        fprintf(file, "%s %d\n", inventory[i].name, inventory[i].stock);
+    }
 
-    printf("Item '%s' added to inventory with quantity %d\n", item, quantity);
-
-    fclose(inventory_file);
+    fclose(file);
 }
 
-// Function to handle the case for adding an item to the inventory
-void add_inventory_item_case() {
-    char new_item[MAX_NAME_LENGTH];
-    int quantity;
-    printf("Enter the name of the new item: ");
-    fgets(new_item, sizeof(new_item), stdin);
-    strtok(new_item, "\n"); // Remove newline character
+// Function to load inventory from file
+void loadInventory(struct Item inventory[], int *inventorySize) {
+    FILE *file = fopen(INVENTORY_FILENAME, "r");
+    if (file == NULL) {
+        printf("Inventory file not found. Starting with empty inventory.\n");
+        return;
+    }
 
-    printf("Enter the quantity of the new item: ");
-    scanf("%d", &quantity);
-    getchar(); // Consume newline character left in the buffer
+    *inventorySize = 0;
+    while (!feof(file) && *inventorySize < MAX_ITEMS) {
+        fscanf(file, "%s %d\n", inventory[*inventorySize].name, &inventory[*inventorySize].stock);
+        (*inventorySize)++;
+    }
 
-    add_inventory_item(new_item, quantity); // Call to add item to inventory function
+    fclose(file);
 }
