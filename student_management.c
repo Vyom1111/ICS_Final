@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -43,9 +42,8 @@ void addStudent() {
     strtok(newStudent.roll, "\n"); // Remove newline character
 
     // Write student record to file
+    fprintf(file, "\n");
     fprintf(file, "%s,%d,%s,%s,%s\n", newStudent.name, newStudent.age, newStudent.contact, newStudent.room, newStudent.roll);
-    fprintf(file, "\n"); // Add newline character to separate student entries
-
     fclose(file);
 }
 
@@ -57,12 +55,12 @@ void displayStudents() {
         return;
     }
 
-    printf("%-15s\t\tAge\t%-10s\t\tRoom\t\tRoll\n", "Name", "Contact");
-    printf("----------------------------------------------------------------------------\n");
+    printf("%-20s\t\tAge\t%-10s\t\tRoom\t\tRoll\n", "Name", "Contact");
+    printf("----------------------------------------------------------------------------------------------------\n");
 
     Student currentStudent;
     while (fscanf(file, "%49[^,],%d,%14[^,],%9[^,],%14[^\n]\n", currentStudent.name, &currentStudent.age, currentStudent.contact, currentStudent.room, currentStudent.roll) != EOF) {
-        printf("%-15s\t\t%d\t%-10s\t\t%s\t\t%s\n", currentStudent.name, currentStudent.age, currentStudent.contact, currentStudent.room, currentStudent.roll);
+        printf("%-20s\t\t%d\t%-10s\t\t%s\t\t%s\n", currentStudent.name, currentStudent.age, currentStudent.contact, currentStudent.room, currentStudent.roll);
     }
 
     fclose(file);
