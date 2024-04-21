@@ -1,10 +1,9 @@
+#include "room_management.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "student_management.h"
-#include "room_management.h"
 
-// Function to initialize room data
 Room* initializeRoomData(int numRooms) {
     if (numRooms <= 0) {
         printf("Error: Invalid number of rooms.\n");
@@ -33,7 +32,7 @@ Room* initializeRoomData(int numRooms) {
     Student *students = getAllStudents(&numStudents);
     if (students == NULL) {
         printf("Error: Failed to fetch student data.\n");
-        free(rooms); // Free memory allocated for rooms
+        free(rooms);
         return NULL;
     }
 
@@ -51,12 +50,11 @@ Room* initializeRoomData(int numRooms) {
         }
     }
 
-    free(students); // Free memory allocated for student data
+    free(students);
 
     return rooms;
 }
 
-// Function to display room details
 void displayRoomDetails(Room *rooms, int numRooms) {
     if (rooms == NULL || numRooms <= 0) {
         printf("No room data to display.\n");
