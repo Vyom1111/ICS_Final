@@ -54,19 +54,16 @@ int main() {
             printf("3. Register admin\n");
             printf("4. Register student\n");
             printf("5. Load complaints\n");
-            printf("6. Input complaints\n");
-            printf("7. Update complaints\n");
-            printf("8. Load visitors\n");
-            printf("9. Add visitor\n");
-            printf("10. Display Room Details\n");
-            printf("11. Add Staff\n");
-            printf("12. Display Staff\n");
-            printf("13. Enter or Exit Hostel\n");
-            printf("14. Display Entry or Exit Log\n");
-            printf("15. Issue Inventory Item\n");
-            printf("16. Display Available Inventory\n");
-            printf("17. Add Item to Inventory\n");
-            printf("18. Exit\n"); // Changed exit option number
+            printf("6. Update complaints\n");
+            printf("7. Load visitors\n");
+            printf("8. Add visitor\n");
+            printf("9. Display Room Details\n");
+            printf("10. Add Staff\n");
+            printf("11. Display Staff\n");
+            printf("12. Display Entry or Exit Log\n");
+            printf("13. Display Available Inventory\n");
+            printf("14. Add Item to Inventory\n");
+            printf("15. Exit\n"); // Changed exit option number
             printf("Enter your choice: ");
             scanf("%d", &choice);
             getchar(); // Consume newline character left in the buffer
@@ -88,57 +85,86 @@ int main() {
                     loadComplaints();
                     break;
                 case 6:
-                    inputComplaintDetails();
-                    break;
-                case 7:
                     inputComplaintUpdate();
                     break;
-                case 8:
+                case 7:
                     loadVisitors();
                     break;
-                case 9:
+                case 8:
                     addVisitor();
                     break;
-                case 10:
+                case 9:
                     displayRoomDetails(rooms, numRooms);
                     break;
-                case 11:
+                case 10:
                     add_staff_case();
                     break;
-                case 12:
+                case 11:
                     display_staff();
                     break;
-                case 13:
-                    printf("Enter 1 to enter hostel, 2 to leave: ");
-                    scanf("%d", &choice);
-                    getchar(); // Consume newline character left in the buffer
-                    enter_exit_hostel(choice);
-                    break;
-                case 14:
+                case 12:
                     display_log();
                     break;
-                case 15:
-                    prompt_issue_inventory_item(); // Call to issue inventory item function
-                    break;
-                case 16:
+                case 13:
                     display_inventory(); // Call to display available inventory function
                     break;
-                case 17:
+                case 14:
                     add_inventory_item_case(); // Call to add item to inventory function
                     break;
-                case 18:
+                case 15:
                     printf("Exiting...\n");
                     break;
                 default:
                     printf("Invalid choice. Please try again.\n");
             }
-        } while (choice != 18);
+        } while (choice != 15);
 
         // Free allocated memory for rooms
         free(rooms);
     }
     else if(login_choice == 2){
+        do {
+            printf("\nHostel Management System\n");
+            printf("1. Register student\n");
+            printf("2. Input complaints\n");
+            printf("3. Display Staff\n");
+            printf("4. Enter or Exit Hostel\n");
+            printf("5. Issue Inventory Item\n");
+            printf("6. Display Available Inventory\n");
+            printf("7. Exit\n"); // Changed exit option number
+            printf("Enter your choice: ");
+            scanf("%d", &choice);
+            getchar(); // Consume newline character left in the buffer
 
+            switch (choice) {
+                case 1:
+                    registerUser();
+                    break;
+                case 2:
+                    inputComplaintDetails();
+                    break;
+                case 3:
+                    display_staff();
+                    break;
+                case 4:
+                    printf("Enter 1 to enter hostel, 2 to leave: ");
+                    scanf("%d", &choice);
+                    getchar(); // Consume newline character left in the buffer
+                    enter_exit_hostel(choice);
+                    break;
+                case 5:
+                    prompt_issue_inventory_item(); // Call to issue inventory item function
+                    break;
+                case 6:
+                    display_inventory(); // Call to display available inventory function
+                    break;
+                case 7:
+                    printf("Exiting...\n");
+                    break;
+                default:
+                    printf("Invalid choice. Please try again.\n");
+            }
+        } while (choice != 7);
     }
     else{}
     return 0;
