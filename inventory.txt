@@ -1,1 +1,12 @@
-BallsBalls: 6
+Balls: 6
+Cricket_Bats: 3
+Table_Tennis_Bat: 4
+Table_Tennis_Ball: 2
+Chess_Set: 1
+Badminton_Racket: 4
+Shuttelcock: 6
+Wickets: 2
+Speakers: 2
+Gym_Keys: 1
+TT_Room_Keys: 1
+TV_Room_Keys: 1
