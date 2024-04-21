@@ -125,46 +125,42 @@ int main() {
     else if(login_choice == 2){
         do {
             printf("\nHostel Management System\n");
-            printf("1. Register student\n");
-            printf("2. Input complaints\n");
-            printf("3. Display Staff\n");
-            printf("4. Enter or Exit Hostel\n");
-            printf("5. Issue Inventory Item\n");
-            printf("6. Display Available Inventory\n");
-            printf("7. Exit\n"); // Changed exit option number
+            printf("1. Input complaints\n");
+            printf("2. Display Staff\n");
+            printf("3. Enter or Exit Hostel\n");
+            printf("4. Issue Inventory Item\n");
+            printf("5. Display Available Inventory\n");
+            printf("6. Exit\n"); // Changed exit option number
             printf("Enter your choice: ");
             scanf("%d", &choice);
             getchar(); // Consume newline character left in the buffer
 
             switch (choice) {
                 case 1:
-                    registerUser();
-                    break;
-                case 2:
                     inputComplaintDetails();
                     break;
-                case 3:
+                case 2:
                     display_staff();
                     break;
-                case 4:
+                case 3:
                     printf("Enter 1 to enter hostel, 2 to leave: ");
                     scanf("%d", &choice);
                     getchar(); // Consume newline character left in the buffer
                     enter_exit_hostel(choice);
                     break;
-                case 5:
+                case 4:
                     prompt_issue_inventory_item(); // Call to issue inventory item function
                     break;
-                case 6:
+                case 5:
                     display_inventory(); // Call to display available inventory function
                     break;
-                case 7:
+                case 6:
                     printf("Exiting...\n");
                     break;
                 default:
                     printf("Invalid choice. Please try again.\n");
             }
-        } while (choice != 7);
+        } while (choice != 6);
     }
     else{}
     return 0;
