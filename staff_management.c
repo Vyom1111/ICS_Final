@@ -1,6 +1,7 @@
 #include "staff_management.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define STAFF_FILE "staff.txt"
 
@@ -45,4 +46,31 @@ void display_staff() {
     }
 
     fclose(staff_file);
+}
+
+// Function for case 11
+void add_staff_case() {
+    char staff_type[50];
+    char name[50];
+    char mobile_number[20];
+    int on_holiday;
+
+    // Input staff details
+    printf("Enter staff type: ");
+    fgets(staff_type, sizeof(staff_type), stdin);
+    strtok(staff_type, "\n"); // Remove newline character
+
+    printf("Enter name: ");
+    fgets(name, sizeof(name), stdin);
+    strtok(name, "\n"); // Remove newline character
+
+    printf("Enter mobile number: ");
+    fgets(mobile_number, sizeof(mobile_number), stdin);
+    strtok(mobile_number, "\n"); // Remove newline character
+
+    printf("Is the staff member on holiday? (1 for yes, 0 for no): ");
+    scanf("%d", &on_holiday);
+    getchar(); // Consume newline character left in the buffer
+
+    add_staff(staff_type, name, mobile_number, on_holiday);
 }
