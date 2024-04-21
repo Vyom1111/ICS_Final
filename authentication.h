@@ -3,6 +3,7 @@
 
 // Function declarations
 void registerUser();
+void registerAdminUser();
 int loginUser();
 int adminUser();
 // void log();
