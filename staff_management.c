@@ -27,10 +27,8 @@ void add_staff(char* staff_type, char* name, char* mobile_number, int on_holiday
     fprintf(staff_file, "Type: %s, Name: %s, Mobile Number: %s, Status: %s\n", staff_type, name, mobile_number, holiday_status);
     fclose(staff_file);
 }
-
-// Function to display all staff members in the log
 void display_staff() {
-    // Display the details of all staff members
+    // Open the staff file
     FILE *staff_file;
     staff_file = fopen(STAFF_FILE, "r"); // Open the file in read mode
     
@@ -40,11 +38,21 @@ void display_staff() {
     }
 
     printf("Staff Details:\n");
-    char line[100];
-    while (fgets(line, sizeof(line), staff_file) != NULL) {
-        printf("%s", line);
+    printf("Type\t%-15s\t%-15s\tStatus\n","Name","Mobile Number");
+    printf("---------------------------------------------------\n");
+    
+    char staff_type[50];
+    char name[50];
+    char mobile_number[20];
+    char status[20];
+    
+    // Read each line from the staff file and display staff details
+    while (fscanf(staff_file, "Type: %49[^,], Name: %49[^,], Mobile Number: %19[^,], Status: %19[^,\n]\n", 
+                  staff_type, name, mobile_number, status) == 4) {
+        printf("%s\t%-15s\t%-15s\t%s\n", staff_type, name, mobile_number, status);
     }
 
+    // Close the staff file
     fclose(staff_file);
 }
 
