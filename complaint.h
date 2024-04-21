@@ -21,6 +21,6 @@ void loadComplaints();
 void saveComplaints();
 void lodgeComplaint(int id, char name[], char roll[], char room[], char type[], char description[]);
 void inputComplaintDetails();
-void updateComplaintStatus(int id, char newStatus[], char comment[]);
+void updateComplaintStatus(int id, char newStatus[]);
 
 #endif /* COMPLAINT_H */
