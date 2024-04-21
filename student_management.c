@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -43,6 +44,7 @@ void addStudent() {
 
     // Write student record to file
     fprintf(file, "%s,%d,%s,%s,%s\n", newStudent.name, newStudent.age, newStudent.contact, newStudent.room, newStudent.roll);
+    fprintf(file, "\n"); // Add newline character to separate student entries
 
     fclose(file);
 }
